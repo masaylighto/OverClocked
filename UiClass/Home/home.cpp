@@ -65,6 +65,21 @@ void homepage::_ChangeVoltage(QString Voltage)
     EditTextInFile("over_voltage",Voltage);
 }
 
+void homepage::_ChangeValues(QString Voltage, QString Frequency)
+{
+    QMessageBox msgBox;
+    msgBox.setText("Are you sure you want to save this configurtion. more also in saving case you will be in need to restart your device");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+   if( msgBox.exec()==QMessageBox::Save)
+   {
+       _ChangeVoltage(Voltage);
+       _ChangeFrequency(Frequency);
+   }
+
+}
+
+
+
 void homepage::_ChangeFrequency(QString Frequency)
 {
     EditTextInFile("arm_freq",Frequency);

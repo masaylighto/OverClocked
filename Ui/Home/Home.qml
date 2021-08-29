@@ -12,13 +12,13 @@ Window {
     function setInitalValueOfVoltage(Voltage)
     {
 
-    voltageSlider.value=Voltage;
-return 0;
+        voltageSlider.value=Voltage;
+        return 0;
     }
     function setInitalValueOffrequency(frequency)
     {
-    frequencySlider.value=Frequancy;
-return 0;
+        frequencySlider.value=Frequancy;
+        return 0;
     }
     Rectangle{
 
@@ -110,7 +110,6 @@ return 0;
             to: 2147
             stepSize: 1
             onValueChanged: {
-                homeClass._ChangeFrequency(value)
 
                 frequencyvalue.y=(frequencySlider.value/2847)*frequencyvalue.parent.height
             }
@@ -124,6 +123,7 @@ return 0;
         Slider {
             id:voltageSlider
             objectName: "voltageSlider"
+
             width: 10
             height: 300
             x:parent.width*0.85
@@ -135,7 +135,7 @@ return 0;
             stepSize: 1
             onValueChanged: {
 
-                homeClass._ChangeVoltage(value)
+
                 voltagevalue.y=((voltageSlider.value*100/16)*voltagevalue.parent.height)/100
             }
             onPressedChanged:
@@ -152,6 +152,7 @@ return 0;
             x:voltageSlider.x-40
             y:voltageSlider.y
             rotation: 180
+            color: "transparent"
             Text {
                 id: voltagevalue
                 text:voltageSlider.value
@@ -168,6 +169,7 @@ return 0;
             x:frequencySlider.x+60
             y:frequencySlider.y
             rotation: 180
+            color: "transparent"
             Text {
                 id: frequencyvalue
                 text:frequencySlider.value
@@ -203,8 +205,8 @@ return 0;
             anchors.centerIn: parent
 
             radius: 4
-            color: "transparent"
-            border.color: "black"
+            color: "Transparent"
+            border.color: "#d3d3d3"
         }
         Column{
             x:voltageSlider.x-10
@@ -217,7 +219,7 @@ return 0;
             Rectangle{
                 width: 1
                 height: voltageSlider.height+20
-                color: "transparent"
+                color: "Transparent"
             }
 
             Text{
@@ -227,7 +229,33 @@ return 0;
             }
         }
 
+        Rectangle{
+            width: 70
+            height: 30
+            x:parent.width-width-10
+            y:parent.height -height-10
+            radius: 8
+            color: "#40a3f9"
+            Text {
+
+                text: qsTr("Save")
+                anchors.centerIn: parent
+                font.pixelSize: 14
+            }
+            MouseArea{
+                anchors.fill: parent
+                onPressed: {
+
+                    homeClass._ChangeValues(voltageSlider.value,frequencySlider.value);
+
+
+                }
+            }
+        }
+
+
     }
+
 
 
 
