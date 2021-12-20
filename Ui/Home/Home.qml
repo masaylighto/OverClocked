@@ -1,5 +1,5 @@
-import QtQuick
-import QtQuick.Window
+import QtQuick 2.15
+import QtQuick.Window 2.1
 import QtQuick.Controls 2.5
 Window {
     minimumWidth: 350
@@ -252,7 +252,29 @@ Window {
                 }
             }
         }
+        Rectangle{
+            width: 70
+            height: 30
+            x:10
+            y:parent.height -height-10
+            radius: 8
+            color: "#40a3f9"
+            Text {
 
+                text: qsTr("Default")
+                anchors.centerIn: parent
+                font.pixelSize: 14
+            }
+            MouseArea{
+                anchors.fill: parent
+                onPressed: {
+
+                    homeClass._RestoreDefault();
+
+
+                }
+            }
+        }
 
     }
 

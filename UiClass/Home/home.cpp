@@ -59,6 +59,12 @@ void homepage::GetConfigContnet()
     reader.close();
 }
 
+void homepage::_RestoreDefault()
+{
+_ReomveVoltageFromFile();
+_ReomveFrequencyFromFile();
+}
+
 void homepage::_ChangeVoltage(QString Voltage)
 {
 
@@ -78,6 +84,26 @@ void homepage::_ChangeValues(QString Voltage, QString Frequency)
 
 }
 
+void homepage::_ReomveVoltageFromFile()
+{
+    RemoveLineFromFile("over_voltage");
+
+}
+
+void homepage::_ReomveFrequencyFromFile()
+{
+    RemoveLineFromFile("arm_freq");
+}
+
+QString homepage::PerpareAConfigLine(QString Key, QString Value)
+{
+    QString line=Key;
+    line.append("=");
+    line.append(Value.toStdString().c_str());
+    line.append("\n");
+    return line;
+}
+
 
 
 void homepage::_ChangeFrequency(QString Frequency)
@@ -85,24 +111,48 @@ void homepage::_ChangeFrequency(QString Frequency)
     EditTextInFile("arm_freq",Frequency);
 }
 
-bool homepage::EditTextInFile(QString OrginalText, QString NewValue)
+bool homepage::EditTextInFile(QString ConfigKey, QString Value)
+{
+    bool Exist=false;
+
+    try
+    {
+        std::ofstream writer("/boot/config.txt");
+        for(int Index=0;Index<Lines.count();Index++)
+        {
+            if(Lines[Index].contains(ConfigKey.toStdString().c_str()))
+            {Exist=true;
+                Lines[Index]=PerpareAConfigLine(ConfigKey,Value);
+            }
+            writer<<Lines[Index].toStdString().c_str();
+
+        }
+        if(!Exist)
+        {
+            Lines.append(PerpareAConfigLine(ConfigKey,Value));
+            writer<<Lines.last().toStdString().c_str();
+        }
+        writer.close();
+
+    }
+    catch (std::exception &e)
+    {
+        QMessageBox msgBox;
+        msgBox.setText(e.what());
+        msgBox.setStandardButtons(QMessageBox::Ok);
+    }
+}
+
+bool homepage::RemoveLineFromFile(QString OrginalText)
 {
     try
     {
 
-
-
         std::ofstream writer("/boot/config.txt");
         for(int Index=0;Index<Lines.count();Index++){
-            if(Lines[Index].contains(OrginalText.toStdString().c_str())){
-
-                QString line;
-                line.append(OrginalText.toStdString().c_str());
-                line.append("=");
-                line.append(NewValue.toStdString().c_str());
-                line.append("\n");
-                Lines[Index]=line;
-
+            if(Lines[Index].contains(OrginalText))
+            {
+                Lines[Index]="";
             }
             writer<<Lines[Index].toStdString().c_str();
 
@@ -110,8 +160,11 @@ bool homepage::EditTextInFile(QString OrginalText, QString NewValue)
         writer.close();
 
     }
-    catch (...)
+    catch (std::exception &e)
     {
-
+        QMessageBox msgBox;
+        msgBox.setText(e.what());
+        msgBox.setStandardButtons(QMessageBox::Ok);
     }
 }
+
