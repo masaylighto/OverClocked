@@ -1,6 +1,6 @@
 # rpi_OverClocked
 # disclamer
-use it on your own risk
+use it at your own risk
 # what this application for
 the job of this application is to change the clock speed and the voltage of raspberry pi 
 # used technlogy
